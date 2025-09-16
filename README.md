@@ -39,15 +39,32 @@ RUN ProducerRabbitmqApplication.java
 
 **a) Abra a pasta "python-consumer" no VSCode**
 
-**b) Com terminal aberto na pasta do projeto**
+**b) Crie um .env na raiz do projeto, com as seguintes informações**
+```bash
+PROJECT_NAME=RabbitMQ Consumer API
+PROJECT_DESCRIPTION=API to consume messages from RabbitMQ
+PROJECT_VERSION=0.1.0
+PROJECT_DOCS_URL=/docs
+PROJECT_REDOC_URL=/redoc
+PROJECT_OPENAPI_URL=/openapi.json
+API_HOST=0.0.0.0
+API_PORT=8000
+
+RABBITMQ_HOST=localhost
+RABBITMQ_PORT=5672
+RABBITMQ_QUEUE=queue.pedido
+RABBITMQ_USER=myuser
+RABBITMQ_PASSWORD=secret
+```
+**c) Com terminal aberto na pasta do projeto**
 - Baixe as dependências com o comando abaixo
 ```bash
 pip install -r requirements.txt
 ```
-**c) Ainda no terminal**
+**d) Ainda no terminal**
 - Inicie a aplicação
 ```bash
-python3 main.py
+python main.py
 ```
 - Pronto, consumidor iniciado
 

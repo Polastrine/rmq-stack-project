@@ -33,7 +33,7 @@ class RabbitMQClient:
         self.connection = pika.BlockingConnection(parameters)
         self.channel = self.connection.channel()
         
-        self.channel.queue_declare(queue=self.queue)
+        self.channel.queue_declare(queue=self.queue, durable=True)
         logger.info(f"Fila '{self.queue}' declarada")
         
         logger.info(f"Conectado ao RabbitMQ em {settings.RABBITMQ_HOST}:{settings.RABBITMQ_PORT}")
