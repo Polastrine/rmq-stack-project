@@ -1,0 +1,1 @@
+from app.modules.eletroniccomponents.controller import router as eletroniccomponents_controller
