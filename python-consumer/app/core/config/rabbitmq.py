@@ -15,22 +15,22 @@ class RabbitMQClient:
     
     def _connect(self):
         """Estabelece conexão com o RabbitMQ"""
-        try:
-            
-            parameters = pika.ConnectionParameters(
-                host=settings.RABBITMQ_HOST,
-                port=settings.RABBITMQ_PORT,
-            )
-            
-            self.connection = pika.BlockingConnection(parameters)
-            self.channel = self.connection.channel()
-            
-            self.channel.queue_declare(queue=settings.RABBITMQ_QUEUE, durable=True)
-            
-            logger.info(f"Conectado ao RabbitMQ em {settings.RABBITMQ_HOST}:{settings.RABBITMQ_PORT}")
-        except Exception as e:
-            logger.error(f"Erro ao conectar ao RabbitMQ: {str(e)}")
-            raise
+        parameters = pika.ConnectionParameters(
+            host=settings.RABBITMQ_HOST,
+            port=settings.RABBITMQ_PORT,
+            heartbeat=600,
+            blocked_connection_timeout=300
+        )
+        
+        self.connection = pika.BlockingConnection(parameters)
+        self.channel = self.connection.channel()
+        
+        self.channel.queue_declare(queue=settings.RABBITMQ_QUEUE, passive=True)
+        logger.info(f"Fila '{settings.RABBITMQ_QUEUE}' encontrada")
+        
+        
+        logger.info(f"Conectado ao RabbitMQ em {settings.RABBITMQ_HOST}:{settings.RABBITMQ_PORT}")
+        
     
     def close(self):
         """Fecha a conexão com o RabbitMQ"""
@@ -38,30 +38,9 @@ class RabbitMQClient:
             self.connection.close()
             logger.info("Conexão com RabbitMQ fechada")
     
-    def publish_message(self, message: Dict[str, Any], queue: str = None):
-        """Publica uma mensagem na fila"""
-        if queue is None:
-            queue = settings.RABBITMQ_QUEUE
-        
-        try:
-            self.channel.basic_publish(
-                exchange='',
-                routing_key=queue,
-                body=json.dumps(message),
-                properties=pika.BasicProperties(
-                    delivery_mode=2,  # torna a mensagem persistente
-                )
-            )
-            logger.info(f"Mensagem publicada na fila '{queue}': {message}")
-            return True
-        except Exception as e:
-            logger.error(f"Erro ao publicar mensagem: {str(e)}")
-            return False
-    
     def consume_messages(self, callback: Callable, queue: str = None):
         """Consome mensagens de uma fila específica"""
-        if queue is None:
-            queue = settings.RABBITMQ_QUEUE
+        queue = settings.RABBITMQ_QUEUE
         
         try:
             self.channel.basic_consume(

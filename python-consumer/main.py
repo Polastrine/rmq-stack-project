@@ -11,11 +11,8 @@ from app import (
     eletroniccomponents_controller
 )
 from app.core.config import settings
+from app.core.consumer import RabbitMQConsumer
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-)
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -34,10 +31,19 @@ app.add_middleware(
 )
 
 
-# Inclusão dos routers
 app.include_router(eletroniccomponents_controller, prefix="/api/v1")
 
-# Função para iniciar o servidor
+@app.on_event("startup")
+async def startup_event():
+    """Executado quando a aplicação é iniciada"""
+    # Inicia o consumidor de RabbitMQ em uma thread separada
+    RabbitMQConsumer.start_consumer()
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Executado quando a aplicação é encerrada"""
+    RabbitMQConsumer.stop_consumer()
+
 if __name__ == "__main__":
     uvicorn.run(
         "main:app",
