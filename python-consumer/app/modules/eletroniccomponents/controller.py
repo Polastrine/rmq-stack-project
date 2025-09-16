@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 from . import service
-from .schemas import MessageEventResponse, MessageListResponse
+from .schemas import MessageListResponse
 
 router = APIRouter(prefix="/electronic-components", tags=["Electronic Components"])
 

@@ -9,8 +9,8 @@ class MessageListResponse(BaseModel):
         "json_schema_extra": {
             "example": {
                 "messages": [
-                    {"componente": "DHT11", "quantidade": 5},
-                    {"componente": "LED", "quantidade": 10}
+                    {"produto": "DHT11", "quantidade": 5},
+                    {"produto": "LED", "quantidade": 10}
                 ]
             }
         }
