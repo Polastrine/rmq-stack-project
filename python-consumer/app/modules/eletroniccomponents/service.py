@@ -11,19 +11,17 @@ class EletronicComponents:
     def callback(cls, ch, method, properties, body):
         """
         Callback para processar mensagens recebidas
+        Seguindo o exemplo da documentação do RabbitMQ
         """
         try:
             message = json.loads(body)
-            logger.info(f"Mensagem recebida: {message}")
+            print(f" [x] Recebido: {message}")
             
             cls._received_messages.append(message)
-                
-            ch.basic_ack(delivery_tag=method.delivery_tag)
             
             return message
         except Exception as e:
             logger.error(f"Erro ao processar mensagem: {str(e)}")
-            ch.basic_nack(delivery_tag=method.delivery_tag, requeue=True)
             return None
 
         

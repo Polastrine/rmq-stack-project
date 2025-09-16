@@ -33,11 +33,21 @@ app.add_middleware(
 
 app.include_router(eletroniccomponents_controller, prefix="/api/v1")
 
+import threading
+
+# Variável para armazenar a thread do consumidor
+consumer_thread = None
+
 @app.on_event("startup")
 async def startup_event():
     """Executado quando a aplicação é iniciada"""
-    # Inicia o consumidor de RabbitMQ em uma thread separada
-    RabbitMQConsumer.start_consumer()
+    # Como o consumidor é bloqueante, precisamos executá-lo em uma thread separada
+    global consumer_thread
+    consumer_thread = threading.Thread(
+        target=RabbitMQConsumer.start_consumer,
+        daemon=True  # A thread será encerrada quando a aplicação terminar
+    )
+    consumer_thread.start()
 
 @app.on_event("shutdown")
 async def shutdown_event():
