@@ -24,7 +24,7 @@
 ```bash
 https://github.com/Polastrine/rmq-stack-project
 ```
-### 2. Inicie o produtor
+### 2. Inicie o produtor + RabbitMq
 
 **a) Abra a pasta "producer-rabbitmq" no Intellij**
 - Inicie a aplicação
@@ -39,7 +39,7 @@ RUN ProducerRabbitmqApplication.java
 
 **a) Abra a pasta "python-consumer" no VSCode**
 
-**b) Crie um .env na raiz do projeto, com as seguintes informações**
+**b) Crie um .env na raiz do projeto, com as seguintes informações:**
 ```bash
 PROJECT_NAME=RabbitMQ Consumer API
 PROJECT_DESCRIPTION=API to consume messages from RabbitMQ
@@ -92,7 +92,7 @@ POST http://localhost:8080/producer
 
 ### Retorno esperado
 ```string
-Pedido enviada com successo {"produto": "produto_1", "quantidade": 0}
+Pedido enviado com successo {"produto": "produto_1", "quantidade": 0}
 ```
 
 ---
@@ -102,7 +102,7 @@ Pedido enviada com successo {"produto": "produto_1", "quantidade": 0}
 ### URL do endpoint de GET (Listar mensagens)
 
 ```
-GET http://localhost:8000/api/messages-event
+GET http://localhost:8000/api/v1/electronic-components/messages-event
 ```
 
 ### Método HTTP: `GET`

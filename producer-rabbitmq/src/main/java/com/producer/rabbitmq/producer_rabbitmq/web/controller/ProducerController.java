@@ -19,7 +19,7 @@ public class ProducerController {
     public ResponseEntity<String> enviar(@RequestBody PedidoRequestDto pedido){
         try {
             producerService.enviarPedido(pedido);
-            return ResponseEntity.status(200).body("Pedido enviada com successo " + pedido.toString());
+            return ResponseEntity.status(200).body("Pedido enviado com successo " + pedido.toString());
         }catch (Exception e){
             return ResponseEntity.status(400).body("Erro ao enviar pedido" + e.getMessage());
         }
