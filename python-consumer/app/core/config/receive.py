@@ -33,7 +33,6 @@ class RabbitMQClient:
         print(f"Conectado ao RabbitMQ em {settings.RABBITMQ_HOST}:{settings.RABBITMQ_PORT}")
     
     def callback(self, ch, method, properties, body):
-        print(f" [x] Received {body}")
         EletronicComponents.process_message(body)
     
     def _start_consuming(self):
